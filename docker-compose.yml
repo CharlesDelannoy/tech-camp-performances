@@ -1,0 +1,19 @@
+volumes:
+  postgres_data:
+
+services:
+  postgres:
+    image: postgres:15.8-alpine3.19
+    container_name: tech_camp_postgres
+    ports:
+      - '127.0.0.1:5433:5432'
+    environment:
+      - PGDATA=/var/lib/postgresql/data/pgdata
+      - POSTGRES_USER=tech_camp
+      - POSTGRES_PASSWORD=tech_camp_pg_passwd
+      - POSTGRES_DB=tech_camp_performances_development
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD', 'pg_isready', '-U', 'tech_camp']
+    restart: unless-stopped
