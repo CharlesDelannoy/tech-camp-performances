@@ -1,4 +1,4 @@
-\restrict 2KfqPDymUc0nswVqxbhKcG9S0WkHcGPTEZ3mwjEfaj8HqraYh2nYDcAK8tzwwAM
+\restrict zEHETtRyPDGjPzncbwlz7IFoPvs1mKBWh9Qx84EWckzaBUMdF8BQM8cc5mwNpbX
 
 -- Dumped from database version 15.8
 -- Dumped by pg_dump version 17.6
@@ -28,7 +28,9 @@ CREATE TABLE public.agenda_notes (
     note text,
     agenda_id bigint NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    done boolean DEFAULT false,
+    is_urgent boolean DEFAULT false
 );
 
 
@@ -129,6 +131,38 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
+-- Name: import_files; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.import_files (
+    id bigint NOT NULL,
+    filename character varying,
+    normalized_content text,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: import_files_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.import_files_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: import_files_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.import_files_id_seq OWNED BY public.import_files.id;
+
+
+--
 -- Name: organizations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -190,6 +224,13 @@ ALTER TABLE ONLY public.appointments ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
+-- Name: import_files id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.import_files ALTER COLUMN id SET DEFAULT nextval('public.import_files_id_seq'::regclass);
+
+
+--
 -- Name: organizations id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -226,6 +267,14 @@ ALTER TABLE ONLY public.appointments
 
 ALTER TABLE ONLY public.ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: import_files import_files_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.import_files
+    ADD CONSTRAINT import_files_pkey PRIMARY KEY (id);
 
 
 --
@@ -266,6 +315,13 @@ CREATE INDEX index_appointments_on_agenda_id ON public.appointments USING btree 
 
 
 --
+-- Name: index_appointments_on_agenda_id_and_start_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_appointments_on_agenda_id_and_start_date ON public.appointments USING btree (agenda_id, start_date);
+
+
+--
 -- Name: agendas fk_rails_3a141a9079; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -293,11 +349,14 @@ ALTER TABLE ONLY public.agenda_notes
 -- PostgreSQL database dump complete
 --
 
-\unrestrict 2KfqPDymUc0nswVqxbhKcG9S0WkHcGPTEZ3mwjEfaj8HqraYh2nYDcAK8tzwwAM
+\unrestrict zEHETtRyPDGjPzncbwlz7IFoPvs1mKBWh9Qx84EWckzaBUMdF8BQM8cc5mwNpbX
 
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250925082059'),
+('20250922150726'),
+('20250922150442'),
 ('20250922085326'),
 ('20250922085316'),
 ('20250922085305'),

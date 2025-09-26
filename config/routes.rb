@@ -9,6 +9,16 @@ Rails.application.routes.draw do
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
+  # Tech Camp Performance routes
+  scope :dev do
+    scope :tech_camp_performance do
+      get :agenda_notes_for_an_organization, to: 'tech_camp_performance#agenda_notes_for_an_organization'
+      get :imported_file_stats, to: 'tech_camp_performance#imported_file_stats'
+      get :agenda_notes_for_an_agenda, to: 'tech_camp_performance#agenda_notes_for_an_agenda'
+      get :past_appointments_count, to: 'tech_camp_performance#past_appointments_count'
+    end
+  end
+
   # Defines the root path route ("/")
   # root "posts#index"
 end
