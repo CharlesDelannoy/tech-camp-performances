@@ -30,9 +30,14 @@ A Rails application for the performance training session at tech camp. This app 
    bin/rails db:migrate
    ```
 
-3. Load seed data:
+3. Load basic seed data (optional):
    ```bash
    bin/rails db:seed
+   ```
+
+4. Load performance exercise data:
+   ```bash
+   bin/rails tech_camp_performance:seed
    ```
 
 ### Running the Application
@@ -45,11 +50,27 @@ The database runs on localhost:5433 (to avoid conflicts with existing PostgreSQL
 
 ### Sample Data
 
-The seed file creates:
-- 3 organizations (Tech Camp, Doctolib, Startup Inc)
-- 4 agendas with various topics
-- 7 agenda notes covering performance, Rails, and development topics
-- 5 appointments scheduled for upcoming dates
+The basic seed file (`db/seeds.rb`) is currently empty - use the tech camp performance seed instead.
+
+The tech camp performance seed creates:
+- **Exercise 1**: 100+ agendas with 3-10 agenda notes each for N+1 query testing
+- **Exercise 2**: Import file for performance analysis
+- **Exercise 3**: 5,000 agenda notes with large text content for pagination testing
+- **Exercise 4**: 500,000+ past appointments for date query performance testing
+
+### Exercises
+
+The performance exercises are available through the `TechCampPerformanceController` located at `app/controllers/tech_camp_performance_controller.rb:1`.
+
+Available exercise endpoints:
+- **Exercise 1**: `http://localhost:3000/dev/tech_camp_performance/agenda_notes_for_an_organization`
+  - Tests N+1 query performance with organizations and their agenda notes
+- **Exercise 2**: `http://localhost:3000/dev/tech_camp_performance/imported_file_stats`
+  - Tests performance with large file content analysis (target: improve to < 1sec)
+- **Exercise 3**: `http://localhost:3000/dev/tech_camp_performance/agenda_notes_for_an_agenda`
+  - Tests pagination performance with 5,000 large agenda notes
+- **Exercise 4**: `http://localhost:3000/dev/tech_camp_performance/past_appointments_count`
+  - Tests date query performance with 500,000+ appointments (target: < 50ms)
 
 ### Development
 
