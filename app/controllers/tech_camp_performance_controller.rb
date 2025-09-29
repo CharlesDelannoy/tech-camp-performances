@@ -34,7 +34,7 @@ class TechCampPerformanceController < ApplicationController
   def agenda_notes_for_an_agenda
     pagination_size = 5_000 # business rule, do not change
     agenda = Agenda.find_by(name: 'AgendaExerciseThree')
-    agenda_notes = agenda.agenda_notes.limit(pagination_size).select(:id, :done, :is_urgent)
+    agenda_notes = agenda.agenda_notes.limit(pagination_size)
 
     render json: { data: agenda_notes.map(&:to_processable_format), count: agenda_notes.count }
   end
