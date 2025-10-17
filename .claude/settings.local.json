@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(rails:*)"
+      "Bash(rails:*)",
+      "Bash(bin/rubocop:*)"
     ],
     "deny": [],
     "ask": []

@@ -12,10 +12,10 @@ Rails.application.routes.draw do
   # Tech Camp Performance routes
   scope :dev do
     scope :tech_camp_performance do
-      get :agenda_notes_for_an_organization, to: 'tech_camp_performance#agenda_notes_for_an_organization'
-      get :imported_file_stats, to: 'tech_camp_performance#imported_file_stats'
-      get :agenda_notes_for_an_agenda, to: 'tech_camp_performance#agenda_notes_for_an_agenda'
-      get :past_appointments_count, to: 'tech_camp_performance#past_appointments_count'
+      get :agenda_notes_for_an_organization, to: "tech_camp_performance#agenda_notes_for_an_organization"
+      get :imported_file_stats, to: "tech_camp_performance#imported_file_stats"
+      get :agenda_notes_for_an_agenda, to: "tech_camp_performance#agenda_notes_for_an_agenda"
+      get :past_appointments_count, to: "tech_camp_performance#past_appointments_count"
     end
   end
 

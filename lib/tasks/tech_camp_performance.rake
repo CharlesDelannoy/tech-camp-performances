@@ -2,7 +2,7 @@
 
 # rubocop:disable Rake/MethodDefinitionInTask
 namespace :tech_camp_performance do
-  desc 'Seeds required for all exercises'
+  desc "Seeds required for all exercises"
   task seed: :environment do
     $stdout.sync = true
     @logger = Logger.new($stdout)
@@ -14,9 +14,9 @@ namespace :tech_camp_performance do
   end
 
   def one
-    @logger.info('[Exercise 1] Started.')
+    @logger.info("[Exercise 1] Started.")
     organization =
-      Organization.find_by(name: 'ExerciseOne') || Organization.create!(name: 'ExerciseOne')
+      Organization.find_by(name: "ExerciseOne") || Organization.create!(name: "ExerciseOne")
 
     # Create 100+ agendas to trigger N+1 performance issues
     100.times do |index|
@@ -40,7 +40,7 @@ namespace :tech_camp_performance do
 
       organization.agendas.find_or_create_by!(name: "#{agenda_name}")
     end
-    @logger.info('[Exercise 1] Agendas created.')
+    @logger.info("[Exercise 1] Agendas created.")
 
     # Create agenda notes for each agenda to trigger N+1 queries
     organization.agendas.each do |agenda|
@@ -60,37 +60,37 @@ namespace :tech_camp_performance do
         ].sample
 
         note_detail = [
-          'Query optimization', 'Cache implementation', 'Database indexing', 'Memory usage', 'API response time',
-          'Security audit', 'Performance review', 'Architecture discussion', 'Best practices', 'Refactoring',
-          'Feature implementation', 'Testing strategy', 'Documentation', 'Deployment plan', 'Environment setup',
-          'Memory leak', 'SQL injection vulnerability', 'Race condition', 'Null pointer exception', 'Performance degradation'
+          "Query optimization", "Cache implementation", "Database indexing", "Memory usage", "API response time",
+          "Security audit", "Performance review", "Architecture discussion", "Best practices", "Refactoring",
+          "Feature implementation", "Testing strategy", "Documentation", "Deployment plan", "Environment setup",
+          "Memory leak", "SQL injection vulnerability", "Race condition", "Null pointer exception", "Performance degradation"
         ].sample
 
         agenda.agenda_notes.find_or_create_by!(
           note: "#{note_content} - #{note_detail}",
-          done: [true, false].sample,
-          is_urgent: [true, false].sample
+          done: [ true, false ].sample,
+          is_urgent: [ true, false ].sample
         )
       end
     end
-    @logger.info('[Exercise 1] AgendaNotes created.')
-    @logger.info('[Exercise 1] Complete.')
+    @logger.info("[Exercise 1] AgendaNotes created.")
+    @logger.info("[Exercise 1] Complete.")
   end
 
   def two
-    @logger.info('[Exercise 2] Started.')
-    Import::File.find_or_create_by!(filename: 'tech_campus_performance.csv')
-    @logger.info('[Exercise 2] Complete.')
+    @logger.info("[Exercise 2] Started.")
+    Import::File.find_or_create_by!(filename: "tech_campus_performance.csv")
+    @logger.info("[Exercise 2] Complete.")
   end
 
   def three
-    @logger.info('[Exercise 3] Started.')
+    @logger.info("[Exercise 3] Started.")
     organization =
-      Organization.find_by(name: 'Tech Camp') || Organization.create!(name: 'Tech Camp')
+      Organization.find_by(name: "Tech Camp") || Organization.create!(name: "Tech Camp")
 
     agenda =
-      Agenda.find_by(name: 'AgendaExerciseThree') ||
-        Agenda.create!(name: 'AgendaExerciseThree', organization: organization)
+      Agenda.find_by(name: "AgendaExerciseThree") ||
+        Agenda.create!(name: "AgendaExerciseThree", organization: organization)
 
     # Create 5000 agenda notes with very large text content for pagination test
     large_text_base = "This is a very large agenda note with extensive content designed to test performance when dealing with large text fields. " * 50
@@ -117,21 +117,21 @@ namespace :tech_camp_performance do
 
       agenda.agenda_notes.find_or_create_by!(
         note: large_note_content,
-        done: [true, false].sample,
-        is_urgent: [true, false].sample
+        done: [ true, false ].sample,
+        is_urgent: [ true, false ].sample
       )
     end
-    @logger.info('[Exercise 3] Complete.')
+    @logger.info("[Exercise 3] Complete.")
   end
 
   def four
-    @logger.info('[Exercise 4] Started.')
+    @logger.info("[Exercise 4] Started.")
     organization =
-      Organization.find_by(name: 'Doctolib') || Organization.create!(name: 'Doctolib')
+      Organization.find_by(name: "Doctolib") || Organization.create!(name: "Doctolib")
 
     agenda =
-      Agenda.find_by(name: 'AgendaExerciseFour') ||
-        Agenda.create!(name: 'AgendaExerciseFour', organization: organization)
+      Agenda.find_by(name: "AgendaExerciseFour") ||
+        Agenda.create!(name: "AgendaExerciseFour", organization: organization)
 
     # Create many past appointments for performance testing (slow date queries without index)
     insert_appointments(agenda.id, 500000)
@@ -145,7 +145,7 @@ namespace :tech_camp_performance do
       )
     end
 
-    @logger.info('[Exercise 4] Complete.')
+    @logger.info("[Exercise 4] Complete.")
   end
 
   def insert_appointments(agenda_id, count)

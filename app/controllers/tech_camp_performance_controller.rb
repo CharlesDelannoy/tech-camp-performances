@@ -3,7 +3,7 @@ class TechCampPerformanceController < ApplicationController
   def agenda_notes_for_an_organization
     agenda_notes =
       Organization
-        .find_by(name: 'ExerciseOne')
+        .find_by(name: "ExerciseOne")
         .agendas
         .map { |agenda| { agenda_id: agenda.id, agenda_notes: agenda.agenda_notes&.map(&:note) } }
 
@@ -14,7 +14,7 @@ class TechCampPerformanceController < ApplicationController
   # Returns information about the content of a specific Import File.
   # Note: you won't be able to improve it under 1sec, but an important improvement can still be made.
   def imported_file_stats
-    import_file = ::Import::File.find_by(filename: 'tech_campus_performance.csv')
+    import_file = ::Import::File.find_by(filename: "tech_campus_performance.csv")
 
     render json: {
              normalized_content_consultation_de_suivi_count: import_file.normalized_content_consultation_de_suivi_count,
@@ -25,7 +25,7 @@ class TechCampPerformanceController < ApplicationController
              normalized_content_miromesnil_count: import_file.normalized_content_miromesnil_count,
              normalized_content_17_09_2018_count: import_file.normalized_content_17_09_2018_count,
              normalized_content_19_09_2018_count: import_file.normalized_content_19_09_2018_count,
-             normalized_content_20_09_2018_count: import_file.normalized_content_20_09_2018_count,
+             normalized_content_20_09_2018_count: import_file.normalized_content_20_09_2018_count
            }
   end
 
@@ -33,7 +33,7 @@ class TechCampPerformanceController < ApplicationController
   # Returns the number of agenda_notes and the id, name and description of each of them for a specific agenda.
   def agenda_notes_for_an_agenda
     pagination_size = 5_000 # business rule, do not change
-    agenda = Agenda.find_by(name: 'AgendaExerciseThree')
+    agenda = Agenda.find_by(name: "AgendaExerciseThree")
     agenda_notes = agenda.agenda_notes.limit(pagination_size)
 
     render json: { data: agenda_notes.map(&:to_processable_format), count: agenda_notes.count }
@@ -43,8 +43,8 @@ class TechCampPerformanceController < ApplicationController
   # Returns the number of appointments before a date for a specific agenda.
   # Count should generally be < 50ms
   def past_appointments_count
-    agenda = Agenda.find_by(name: 'AgendaExerciseFour')
-    count = agenda.appointments.where('date(start_date) <= ?', Date.current).count
+    agenda = Agenda.find_by(name: "AgendaExerciseFour")
+    count = agenda.appointments.where("date(start_date) <= ?", Date.current).count
     render json: count
   end
 end
