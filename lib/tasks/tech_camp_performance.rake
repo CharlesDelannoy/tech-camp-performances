@@ -151,13 +151,21 @@ namespace :tech_camp_performance do
   def insert_appointments(agenda_id, count)
     agenda = Agenda.find(agenda_id)
 
-    # Create appointments that will ALL match the query (start_date <= Date.current + 1)
-    # Spread them over last 3 years to ensure all dates are in the past
+    # Create appointments where only ~5% match the query (start_date <= Date.current + 1)
+    # This ensures PostgreSQL will use the index instead of sequential scan
+    # 95% of appointments will be in the future (2+ days from now)
+    # 5% will be in the past or near present (matching the query condition)
     appointments_data = []
     count.times do |i|
-      # Spread appointments over last 1095 days (3 years) - all will match the query
-      days_ago = rand(2..1095) # Start from 2 days ago to ensure all are in the past
-      start_time = days_ago.days.ago.beginning_of_day + rand(8..17).hours + rand(0..59).minutes
+      if rand < 0.05
+        # 5% of appointments are in the past or within next day (will match query)
+        days_offset = rand(-365..1) # Past year or tomorrow
+        start_time = days_offset.days.from_now.beginning_of_day + rand(8..17).hours + rand(0..59).minutes
+      else
+        # 95% of appointments are in the future (won't match query)
+        days_offset = rand(2..1095) # 2 days to 3 years in the future
+        start_time = days_offset.days.from_now.beginning_of_day + rand(8..17).hours + rand(0..59).minutes
+      end
 
       appointments_data << {
         agenda_id: agenda_id,
